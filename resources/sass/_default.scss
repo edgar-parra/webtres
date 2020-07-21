@@ -1,0 +1,35 @@
+h1, h2 {
+  font-size: large !important;  
+}
+
+thead {
+  font-family: 'Mukta', sans-serif;
+  background-color: #eee;
+}
+
+th {
+  color: #888;
+}
+
+.table > tbody > tr > td {
+  vertical-align: middle;
+}
+
+.picture {
+  max-width: 45px;
+}
+
+.material-icons-outlined{
+  cursor: pointer;
+  font-size: large !important;
+}
+
+input[type='file'] {
+  display: none;
+}
+
+@media only screen and (max-width: 992px) {
+  th, td{
+    padding: 0.3rem !important;
+  }
+}
