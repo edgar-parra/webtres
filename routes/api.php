@@ -16,3 +16,5 @@ use Illuminate\Support\Facades\Route;
 
 Route::apiResource('users', 'UserController')->except('update');
 Route::post('users/{user}', 'UserController@update')->name('users.update');
+Route::post('users/rut/store/validate', 'UserController@validateStoreRut');
+Route::post('users/rut/update/validate/{user}', 'UserController@validateUpdateRut');
