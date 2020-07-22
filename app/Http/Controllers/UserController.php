@@ -59,7 +59,7 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        //
+        return $user;
     }
 
     /**
@@ -83,7 +83,7 @@ class UserController extends Controller
         }
 
         if ($request->picture) {
-            $picture = $this->upload($request->picture);
+            $picture = $this->upload($request->picture, $user->picture);
             $user->picture = 'img/' . $picture;
         }
 
@@ -100,6 +100,9 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
+        if ($user->picture) {
+            $this->deletePicture($user->picture);
+        }
         return $user->delete();
     }
 
@@ -107,11 +110,27 @@ class UserController extends Controller
      * Upload profile picture in storage.
      *
      * @param  $picture
+     * @param  $oldPicture
      * @return \Illuminate\Http\Response
      */
-    public function upload($picture)
+    public function upload($picture, $oldPicture = null)
     {
+        if ($oldPicture) {
+            $this->deletePicture($oldPicture);
+        }
+
         return Storage::disk('public_uploads')->put('pictures', $picture);
+    }
+
+    /**
+     * Delete profile picture from storage.
+     *
+     * @param  $picture
+     */
+    public function deletePicture($picture)
+    {
+        $picture = str_replace('img/', '', $picture);
+        Storage::disk('public_uploads')->delete($picture);
     }
 
     /**
