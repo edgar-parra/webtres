@@ -2299,6 +2299,7 @@ __webpack_require__.r(__webpack_exports__);
 
         _this2.create = {};
         _this2.errors = [];
+        $('#picture').val('');
 
         _this2.showAlert('alert-success', 'El usuario fue creado exitosamente', true);
       })["catch"](function (error) {
@@ -2347,6 +2348,7 @@ __webpack_require__.r(__webpack_exports__);
       }).then(function (response) {
         _this3.users[_this3.edit.index] = response.data;
         _this3.errors = [];
+        $('#pictureEdit').val('');
 
         _this3.showAlert('alert-success', 'El usuario fue actualizado exitosamente');
 

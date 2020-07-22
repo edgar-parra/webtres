@@ -348,6 +348,7 @@
                     this.users.push(response.data);
                     this.create = {};
                     this.errors = [];
+                    $('#picture').val('');
                     this.showAlert('alert-success', 'El usuario fue creado exitosamente', true);
                 })
                 .catch(error => {
@@ -390,6 +391,7 @@
                 .then(response => {
                     this.users[this.edit.index] = response.data;
                     this.errors = [];
+                    $('#pictureEdit').val('');
                     this.showAlert('alert-success', 'El usuario fue actualizado exitosamente');
                     $('#modalEdit').modal('hide');
                 })
