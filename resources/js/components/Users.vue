@@ -146,9 +146,9 @@
                         <div class="form-row">
                             <div class="form-group col-sm-10 offset-sm-1">
                                 <button class="btn btn-secondary btn-block" @click="file()">Subir foto de perfil</button>
-                                <input type="file" id="picture" ref="picture" class="form-control" :class="{ 'is-invalid' : errors.file }">
-                                <span class="invalid-feedback" role="alert" v-if="errors.file">
-                                    <strong>{{ errors.file[0] }}</strong>
+                                <input type="file" id="picture" ref="picture" class="form-control" :class="{ 'is-invalid' : errors.picture }">
+                                <span class="invalid-feedback" role="alert" v-if="errors.picture">
+                                    <strong>{{ errors.picture[0] }}</strong>
                                 </span> 
                             </div>
                         </div>
@@ -333,9 +333,16 @@
                 if (this.$refs.picture.files[0]) {
                     formData.append('picture', this.$refs.picture.files[0]);
                 }
-                formData.append('data', JSON.stringify(this.create));
                 
-                axios.post('api/users', formData)
+                for ( var key in this.create ) {
+                    formData.append(key, this.create[key]);
+                }
+                
+                axios.post('api/users', formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    }
+                })
                 .then(response => {
                     this.users.push(response.data);
                     this.create = {};
@@ -367,9 +374,16 @@
                 if (this.$refs.pictureEdit.files[0]) {
                     formData.append('picture', this.$refs.pictureEdit.files[0]);
                 }
-                formData.append('data', JSON.stringify(this.edit));
+                
+                for ( var key in this.create ) {
+                    formData.append(key, this.create[key]);
+                }
 
-                axios.post('api/users/' + this.edit.id, formData)
+                axios.post('api/users/' + this.edit.id, formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    }
+                })
                 .then(response => {
                     this.users[this.edit.index] = response.data;
                     this.errors = [];
