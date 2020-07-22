@@ -15,8 +15,9 @@ class UserSeeder extends Seeder
         $data = [
             [
                 'rut' => '15567890-5',
-                'first_name' => 'Juan Andrés',
-                'last_name' => 'Soto Álvarez',
+                'names' => 'Juan Andrés',
+                'father_surname' => 'Soto',
+                'mother_surname' => 'Álvarez',
                 'email' => 'jsoto@gmail.com',
                 'date_birth' => '1984-06-22',
                 'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi',
@@ -24,8 +25,9 @@ class UserSeeder extends Seeder
             ],
             [
                 'rut' => '14567890-5',
-                'first_name' => 'Mariana Andrea',
-                'last_name' => 'Ramirez Duran',
+                'names' => 'Mariana Andrea',
+                'father_surname' => 'Ramirez',
+                'mother_surname' => 'Duran',
                 'email' => 'mramirez@gmail.com',
                 'date_birth' => '1994-01-30',
                 'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi',
@@ -33,8 +35,9 @@ class UserSeeder extends Seeder
             ],
             [
                 'rut' => '13567890-5',
-                'first_name' => 'Cristian',
-                'last_name' => 'Zamora Vargas',
+                'names' => 'Cristian',
+                'father_surname' => 'Zamora',
+                'mother_surname' => 'Vargas',
                 'email' => 'czamo@gmail.com',
                 'date_birth' => '1974-12-16',
                 'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi',
@@ -42,8 +45,9 @@ class UserSeeder extends Seeder
             ],
             [
                 'rut' => '12567890-5',
-                'first_name' => 'Alberto Carlos',
-                'last_name' => 'Fuentes Gonzalez',
+                'names' => 'Alberto Carlos',
+                'father_surname' => 'Fuentes',
+                'mother_surname' => 'Gonzalez',
                 'email' => 'afuentes@gmail.com',
                 'date_birth' => '1989-11-03',
                 'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi',
@@ -51,8 +55,9 @@ class UserSeeder extends Seeder
             ],
             [
                 'rut' => '11567890-5',
-                'first_name' => 'Carlos',
-                'last_name' => 'Barrera Nuñez',
+                'names' => 'Carlos',
+                'father_surname' => 'Barrera',
+                'mother_surname' => 'Nuñez',
                 'email' => 'carlosb@gmail.com',
                 'date_birth' => '1954-08-11',
                 'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi',
@@ -63,8 +68,9 @@ class UserSeeder extends Seeder
         foreach ($data as $user) {
             User::create([
                 'rut' => $user['rut'],
-                'first_name' => $user['first_name'],
-                'last_name' => $user['last_name'],
+                'names' => $user['names'],
+                'father_surname' => $user['father_surname'],
+                'mother_surname' => $user['mother_surname'],
                 'email' => $user['email'],
                 'date_birth' => $user['date_birth'],
                 'password' => $user['password'],
