@@ -30,7 +30,7 @@
                             </thead>
                             <tbody>
                                 <tr v-for="(user, index) in users" :key="user.id" v-if="user.id">
-                                    <td>
+                                    <td data-toggle="modal" data-target="#modalShow" @click="show = user">
                                         <img :src="user.picture"   alt="" class="rounded-circle picture" v-if="user.picture">
                                         <img src="img/pictures/default.png" alt="" class="rounded-circle picture" v-else>
                                     </td>
@@ -55,6 +55,62 @@
                                 </tr>
                             </tbody>
                         </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Modal Show -->
+        <div class="modal fade" id="modalShow">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2 class="modal-title">Detalles del usuario</h2>
+                        <button class="close" data-dismiss="modal" @click="clear()">
+                            <span>&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-row justify-content-center">
+                            <img :src="show.picture" alt="" class="rounded-circle picture-medium" v-if="show.picture">
+                            <img src="img/pictures/default.png" alt="" class="rounded-circle picture-medium" v-else>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-sm-10 offset-sm-1">
+                                <label class="font-weight-bold">Nombres</label>
+                                <input type="text" v-model="show.names" class="form-control-plaintext" readonly>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-sm-5 offset-sm-1">
+                                <label class="font-weight-bold">Apellido paterno</label>
+                                <input type="text" v-model="show.father_surname" class="form-control-plaintext" readonly>
+                            </div>
+                            <div class="form-group col-sm-5" v-if="show.mother_surname">
+                                <label class="font-weight-bold">Apellido materno</label>
+                                <input type="text" v-model="show.mother_surname" class="form-control-plaintext" readonly>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-sm-5 offset-sm-1">
+                                <label class="font-weight-bold">RUT</label>
+                                <input type="text" v-model="show.rut" class="form-control-plaintext" readonly>
+                            </div>
+                            <div class="form-group col-sm-5">
+                                <label class="font-weight-bold">Fecha de nacimiento</label>
+                                <input type="date" v-model="show.date_birth" class="form-control-plaintext" readonly>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-sm-10 offset-sm-1">
+                                <label class="font-weight-bold">Email</label>
+                                <input type="email" v-model="show.email" class="form-control-plaintext" readonly>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-sm-10 offset-sm-1">
+                                <button class="btn btn-outline-secondary btn-block" data-dismiss="modal" @click="clear()">Cerrar</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -94,7 +150,7 @@
                                 </span> 
                             </div>
                             <div class="form-group col-sm-5">
-                                <label class="required">Apellido materno</label>
+                                <label>Apellido materno</label>
                                 <input type="text" v-model="create.mother_surname" class="form-control" :class="{ 'is-invalid' : errors.mother_surname }">
                                 <span class="invalid-feedback" role="alert" v-if="errors.mother_surname">
                                     <strong>{{ errors.mother_surname[0] }}</strong>
@@ -201,7 +257,7 @@
                                 </span> 
                             </div>
                             <div class="form-group col-sm-5">
-                                <label class="required">Apellido materno</label>
+                                <label>Apellido materno</label>
                                 <input type="text" v-model="edit.mother_surname" class="form-control" :class="{ 'is-invalid' : errors.mother_surname }">
                                 <span class="invalid-feedback" role="alert" v-if="errors.mother_surname">
                                     <strong>{{ errors.mother_surname[0] }}</strong>
@@ -235,7 +291,7 @@
                         </div>
                         <div class="form-row">
                             <div class="form-group col-sm-10 offset-sm-1">
-                                <label class="required">Contraseña</label>
+                                <label>Contraseña</label>
                                 <div class="input-group">
                                     <input type="password" id="editPass" v-model="edit.password" placeholder="Ingresa una nueva contraseña" class="form-control border-right-0" :class="{ 'is-invalid' : errors.password }">
                                     <span class="input-group-append bg-white border-left-0" @click="togglePassword('#editPass')">
@@ -253,9 +309,9 @@
                         <div class="form-row">
                             <div class="form-group col-sm-10 offset-sm-1">
                                 <button class="btn btn-secondary btn-block" @click="fileEdit()">Subir foto de perfil</button>
-                                <input type="file" id="pictureEdit" ref="pictureEdit" class="form-control" :class="{ 'is-invalid' : errors.file }">
-                                <span class="invalid-feedback" role="alert" v-if="errors.file">
-                                    <strong>{{ errors.file[0] }}</strong>
+                                <input type="file" id="pictureEdit" ref="pictureEdit" class="form-control" :class="{ 'is-invalid' : errors.picture }">
+                                <span class="invalid-feedback" role="alert" v-if="errors.picture">
+                                    <strong>{{ errors.picture[0] }}</strong>
                                 </span> 
                             </div>
                         </div>
@@ -307,6 +363,7 @@
         data() {
             return {
                 users: [],
+                show: {},
                 create: {},
                 edit: {},
                 del: {},

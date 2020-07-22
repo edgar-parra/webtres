@@ -20,6 +20,11 @@ th {
 
 .picture {
   max-width: 45px;
+  cursor: pointer;
+}
+
+.picture-medium {
+  max-width: 125px;
 }
 
 .material-icons-outlined {
@@ -29,6 +34,11 @@ th {
 
 input[type=file] {
   display: none;
+}
+
+.required::before {
+  content: "* ";
+  color: #e3342f;
 }
 
 @media only screen and (max-width: 992px) {

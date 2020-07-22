@@ -2245,10 +2245,67 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       users: [],
+      show: {},
       create: {},
       edit: {},
       del: {},
@@ -59358,20 +59415,34 @@ var render = function() {
                   _vm._l(_vm.users, function(user, index) {
                     return user.id
                       ? _c("tr", { key: user.id }, [
-                          _c("td", [
-                            user.picture
-                              ? _c("img", {
-                                  staticClass: "rounded-circle picture",
-                                  attrs: { src: user.picture, alt: "" }
-                                })
-                              : _c("img", {
-                                  staticClass: "rounded-circle picture",
-                                  attrs: {
-                                    src: "img/pictures/default.png",
-                                    alt: ""
-                                  }
-                                })
-                          ]),
+                          _c(
+                            "td",
+                            {
+                              attrs: {
+                                "data-toggle": "modal",
+                                "data-target": "#modalShow"
+                              },
+                              on: {
+                                click: function($event) {
+                                  _vm.show = user
+                                }
+                              }
+                            },
+                            [
+                              user.picture
+                                ? _c("img", {
+                                    staticClass: "rounded-circle picture",
+                                    attrs: { src: user.picture, alt: "" }
+                                  })
+                                : _c("img", {
+                                    staticClass: "rounded-circle picture",
+                                    attrs: {
+                                      src: "img/pictures/default.png",
+                                      alt: ""
+                                    }
+                                  })
+                            ]
+                          ),
                           _vm._v(" "),
                           _c("td", { staticClass: "align-middle" }, [
                             _vm._v(_vm._s(user.names))
@@ -59470,6 +59541,246 @@ var render = function() {
                 ],
                 2
               )
+            ])
+          ])
+        ])
+      ])
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "modal fade", attrs: { id: "modalShow" } }, [
+      _c("div", { staticClass: "modal-dialog modal-dialog-centered" }, [
+        _c("div", { staticClass: "modal-content" }, [
+          _c("div", { staticClass: "modal-header" }, [
+            _c("h2", { staticClass: "modal-title" }, [
+              _vm._v("Detalles del usuario")
+            ]),
+            _vm._v(" "),
+            _c(
+              "button",
+              {
+                staticClass: "close",
+                attrs: { "data-dismiss": "modal" },
+                on: {
+                  click: function($event) {
+                    return _vm.clear()
+                  }
+                }
+              },
+              [_c("span", [_vm._v("×")])]
+            )
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "modal-body" }, [
+            _c("div", { staticClass: "form-row justify-content-center" }, [
+              _vm.show.picture
+                ? _c("img", {
+                    staticClass: "rounded-circle picture-medium",
+                    attrs: { src: _vm.show.picture, alt: "" }
+                  })
+                : _c("img", {
+                    staticClass: "rounded-circle picture-medium",
+                    attrs: { src: "img/pictures/default.png", alt: "" }
+                  })
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "form-row" }, [
+              _c("div", { staticClass: "form-group col-sm-10 offset-sm-1" }, [
+                _c("label", { staticClass: "font-weight-bold" }, [
+                  _vm._v("Nombres")
+                ]),
+                _vm._v(" "),
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.show.names,
+                      expression: "show.names"
+                    }
+                  ],
+                  staticClass: "form-control-plaintext",
+                  attrs: { type: "text", readonly: "" },
+                  domProps: { value: _vm.show.names },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(_vm.show, "names", $event.target.value)
+                    }
+                  }
+                })
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "form-row" }, [
+              _c("div", { staticClass: "form-group col-sm-5 offset-sm-1" }, [
+                _c("label", { staticClass: "font-weight-bold" }, [
+                  _vm._v("Apellido paterno")
+                ]),
+                _vm._v(" "),
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.show.father_surname,
+                      expression: "show.father_surname"
+                    }
+                  ],
+                  staticClass: "form-control-plaintext",
+                  attrs: { type: "text", readonly: "" },
+                  domProps: { value: _vm.show.father_surname },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(_vm.show, "father_surname", $event.target.value)
+                    }
+                  }
+                })
+              ]),
+              _vm._v(" "),
+              _vm.show.mother_surname
+                ? _c("div", { staticClass: "form-group col-sm-5" }, [
+                    _c("label", { staticClass: "font-weight-bold" }, [
+                      _vm._v("Apellido materno")
+                    ]),
+                    _vm._v(" "),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.show.mother_surname,
+                          expression: "show.mother_surname"
+                        }
+                      ],
+                      staticClass: "form-control-plaintext",
+                      attrs: { type: "text", readonly: "" },
+                      domProps: { value: _vm.show.mother_surname },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(
+                            _vm.show,
+                            "mother_surname",
+                            $event.target.value
+                          )
+                        }
+                      }
+                    })
+                  ])
+                : _vm._e()
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "form-row" }, [
+              _c("div", { staticClass: "form-group col-sm-5 offset-sm-1" }, [
+                _c("label", { staticClass: "font-weight-bold" }, [
+                  _vm._v("RUT")
+                ]),
+                _vm._v(" "),
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.show.rut,
+                      expression: "show.rut"
+                    }
+                  ],
+                  staticClass: "form-control-plaintext",
+                  attrs: { type: "text", readonly: "" },
+                  domProps: { value: _vm.show.rut },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(_vm.show, "rut", $event.target.value)
+                    }
+                  }
+                })
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "form-group col-sm-5" }, [
+                _c("label", { staticClass: "font-weight-bold" }, [
+                  _vm._v("Fecha de nacimiento")
+                ]),
+                _vm._v(" "),
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.show.date_birth,
+                      expression: "show.date_birth"
+                    }
+                  ],
+                  staticClass: "form-control-plaintext",
+                  attrs: { type: "date", readonly: "" },
+                  domProps: { value: _vm.show.date_birth },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(_vm.show, "date_birth", $event.target.value)
+                    }
+                  }
+                })
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "form-row" }, [
+              _c("div", { staticClass: "form-group col-sm-10 offset-sm-1" }, [
+                _c("label", { staticClass: "font-weight-bold" }, [
+                  _vm._v("Email")
+                ]),
+                _vm._v(" "),
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.show.email,
+                      expression: "show.email"
+                    }
+                  ],
+                  staticClass: "form-control-plaintext",
+                  attrs: { type: "email", readonly: "" },
+                  domProps: { value: _vm.show.email },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(_vm.show, "email", $event.target.value)
+                    }
+                  }
+                })
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "form-row" }, [
+              _c("div", { staticClass: "form-group col-sm-10 offset-sm-1" }, [
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-outline-secondary btn-block",
+                    attrs: { "data-dismiss": "modal" },
+                    on: {
+                      click: function($event) {
+                        return _vm.clear()
+                      }
+                    }
+                  },
+                  [_vm._v("Cerrar")]
+                )
+              ])
             ])
           ])
         ])
@@ -59631,9 +59942,7 @@ var render = function() {
                 ]),
                 _vm._v(" "),
                 _c("div", { staticClass: "form-group col-sm-5" }, [
-                  _c("label", { staticClass: "required" }, [
-                    _vm._v("Apellido materno")
-                  ]),
+                  _c("label", [_vm._v("Apellido materno")]),
                   _vm._v(" "),
                   _c("input", {
                     directives: [
@@ -60122,9 +60431,7 @@ var render = function() {
                 ]),
                 _vm._v(" "),
                 _c("div", { staticClass: "form-group col-sm-5" }, [
-                  _c("label", { staticClass: "required" }, [
-                    _vm._v("Apellido materno")
-                  ]),
+                  _c("label", [_vm._v("Apellido materno")]),
                   _vm._v(" "),
                   _c("input", {
                     directives: [
@@ -60305,9 +60612,7 @@ var render = function() {
               _vm._v(" "),
               _c("div", { staticClass: "form-row" }, [
                 _c("div", { staticClass: "form-group col-sm-10 offset-sm-1" }, [
-                  _c("label", { staticClass: "required" }, [
-                    _vm._v("Contraseña")
-                  ]),
+                  _c("label", [_vm._v("Contraseña")]),
                   _vm._v(" "),
                   _c("div", { staticClass: "input-group" }, [
                     _c("input", {
@@ -60405,18 +60710,18 @@ var render = function() {
                   _c("input", {
                     ref: "pictureEdit",
                     staticClass: "form-control",
-                    class: { "is-invalid": _vm.errors.file },
+                    class: { "is-invalid": _vm.errors.picture },
                     attrs: { type: "file", id: "pictureEdit" }
                   }),
                   _vm._v(" "),
-                  _vm.errors.file
+                  _vm.errors.picture
                     ? _c(
                         "span",
                         {
                           staticClass: "invalid-feedback",
                           attrs: { role: "alert" }
                         },
-                        [_c("strong", [_vm._v(_vm._s(_vm.errors.file[0]))])]
+                        [_c("strong", [_vm._v(_vm._s(_vm.errors.picture[0]))])]
                       )
                     : _vm._e()
                 ])

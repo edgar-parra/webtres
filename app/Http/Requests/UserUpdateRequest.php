@@ -30,7 +30,19 @@ class UserUpdateRequest extends FormRequest
             'email' => 'required|email|unique:users,email,' . $this->user->id,
             'date_birth' => 'required|date',
             'password' => 'sometimes|min:8',
-            'picture' => 'sometimes|mimes:jpeg,png|dimensions:min_width=200,min_height=200'
+            'picture' => 'sometimes|mimes:jpeg|dimensions:max_width=200,max_height=200'
+        ];
+    }
+
+    /**
+     * Get the custom messages.
+     *
+     * @return array
+     */
+    public function messages()
+    {
+        return [
+            'picture.dimensions' => 'El campo foto debe tener dimensiones máximas de 200x200 px.'
         ];
     }
 }
