@@ -2,6 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\RutRequest;
+use App\Http\Requests\RutUpdateRequest;
+use App\Http\Requests\UserRequest;
+use App\Http\Requests\UserUpdateRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -23,21 +27,19 @@ class UserController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\UserRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
-        $data = json_decode($request->data);
-
+    public function store(UserRequest $request)
+    {     
         $user = User::create([
-            'rut' => $data->rut,
-            'names' => $data->names,
-            'father_surname' => $data->father_surname,
-            'mother_surname' => $data->mother_surname,
-            'email' => $data->email,
-            'date_birth'=> $data->date_birth, 
-            'password' => Hash::make($data->password),
+            'rut' => $request->rut,
+            'names' => $request->names,
+            'father_surname' => $request->father_surname,
+            'mother_surname' => $request->mother_surname??'',
+            'email' => $request->email,
+            'date_birth'=> $request->date_birth, 
+            'password' => Hash::make($request->password),
         ]);
 
         if ($request->picture) {
@@ -63,23 +65,21 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\UserUpdateRequest  $request
      * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, User $user)
+    public function update(UserUpdateRequest $request, User $user)
     {
-        $data = json_decode($request->data);
+        $user->rut = $request->rut;
+        $user->names = $request->names;
+        $user->father_surname = $request->father_surname;
+        $user->mother_surname = $request->mother_surname??'';
+        $user->email = $request->email;
+        $user->date_birth = $request->date_birth;
 
-        $user->rut = $data->rut;
-        $user->names = $data->names;
-        $user->father_surname = $data->father_surname;
-        $user->mother_surname = $data->mother_surname;
-        $user->email = $data->email;
-        $user->date_birth = $data->date_birth;
-
-        if (isset($data->password)) {
-            $user->password = Hash::make($data->password);
+        if (isset($request->password)) {
+            $user->password = Hash::make($request->password);
         }
 
         if ($request->picture) {
@@ -107,7 +107,6 @@ class UserController extends Controller
      * Upload profile picture in storage.
      *
      * @param  $picture
-     * @param  $id
      * @return \Illuminate\Http\Response
      */
     public function upload($picture)
@@ -115,5 +114,27 @@ class UserController extends Controller
         return Storage::disk('public_uploads')->put('pictures', $picture);
     }
 
+    /**
+     * Validate rut for store.
+     *
+     * @param  App\Http\Requests\RutRequest $request
+     * @return \Illuminate\Http\Response
+     */
+    public function validateStoreRut(RutRequest $request)
+    {
+        return true;
+    }
+
+    /**
+     * Validate rut for update.
+     *
+     * @param  App\Http\Requests\RutUpdateRequest $request
+     * @param  \App\Models\User  $user
+     * @return \Illuminate\Http\Response
+     */
+    public function validateUpdateRut(RutUpdateRequest $request, User $user)
+    {
+        return true;
+    }
 
 }

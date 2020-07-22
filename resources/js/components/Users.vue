@@ -104,7 +104,7 @@
                         <div class="form-row">
                             <div class="form-group col-sm-5 offset-sm-1">
                                 <label class="required">RUT</label>
-                                <input type="text" v-model="create.rut" class="form-control" :class="{ 'is-invalid' : errors.rut }">
+                                <input type="text" id="createRut" v-model="create.rut" @keydown="isCharRutValid"  @keyup="validateRut('#createRut')" maxlength="10" placeholder="00000000-0" class="form-control" :class="{ 'is-invalid' : errors.rut }">
                                 <span class="invalid-feedback" role="alert" v-if="errors.rut">
                                     <strong>{{ errors.rut[0] }}</strong>
                                 </span> 
@@ -211,7 +211,7 @@
                         <div class="form-row">
                             <div class="form-group col-sm-5 offset-sm-1">
                                 <label class="required">RUT</label>
-                                <input type="text" v-model="edit.rut" class="form-control" :class="{ 'is-invalid' : errors.rut }">
+                                <input type="text" id="editRut" v-model="edit.rut" @keydown="isCharRutValid"  @keyup="validateRut('#editRut')" maxlength="10" placeholder="00000000-0" class="form-control" :class="{ 'is-invalid' : errors.rut }">
                                 <span class="invalid-feedback" role="alert" v-if="errors.rut">
                                     <strong>{{ errors.rut[0] }}</strong>
                                 </span> 
@@ -312,7 +312,8 @@
                 del: {},
                 alert: {show: false, type: '', message: '', inModal: false},
                 errors: [],
-                viewPass: false
+                viewPass: false,
+                timer: null
             }
         },
         mounted() {
@@ -367,6 +368,7 @@
                 }
                 else {
                     Object.assign(this.edit, this._beforeEditingCache);
+                    this.clear();
                 }
             },
             update() {
@@ -375,8 +377,9 @@
                     formData.append('picture', this.$refs.pictureEdit.files[0]);
                 }
                 
-                for ( var key in this.create ) {
-                    formData.append(key, this.create[key]);
+                for ( var key in this.edit ) {
+                    if (key != 'picture')
+                        formData.append(key, this.edit[key]);
                 }
 
                 axios.post('api/users/' + this.edit.id, formData, {
@@ -430,6 +433,9 @@
             },
             clear() {
                 this.alert.show = false;
+                this.create = {};
+                this.edit = {};
+                this.errors = [];
             },
             isEmptyListUsers() {
                 let empty = true;
@@ -440,6 +446,43 @@
                     }
                 }
                 return empty;
+            },
+            isCharRutValid(event) {
+                let code = event.keyCode;
+                if (!((code >= 48 && code <= 57) || (code == 8 || code == 46 || code == 75 || code == 107 || code == 173))) {
+                    event.preventDefault();
+                }
+            },
+            validateRut(selector) {
+                clearTimeout(this.timer);
+                let rut = $(selector).val();
+                let url = '';
+                if (!rut) {
+                    return;
+                }
+                if (selector == '#createRut') {
+                    url = 'api/users/rut/store/validate';
+                }
+                else {
+                    url = 'api/users/rut/update/validate/' + this.edit.id;
+                }
+			    this.timer = setTimeout(() => {
+                    axios.post(url, {'rut': rut})
+                    .then(response => {
+                        delete this.errors['rut'];
+                        $(selector).removeClass('is-invalid');
+                        $(selector).addClass('is-valid');
+                    })
+                    .catch(error => {
+                        let errorCode = error.response.status;
+                        switch(errorCode){
+                            case 422:
+                                this.errors = error.response.data.errors;
+                            default:
+                                break;
+                        }
+                    })
+			    }, 800);
             }
         },
         filters: {

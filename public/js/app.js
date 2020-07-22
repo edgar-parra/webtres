@@ -2259,7 +2259,8 @@ __webpack_require__.r(__webpack_exports__);
         inModal: false
       },
       errors: [],
-      viewPass: false
+      viewPass: false,
+      timer: null
     };
   },
   mounted: function mounted() {
@@ -2285,8 +2286,15 @@ __webpack_require__.r(__webpack_exports__);
         formData.append('picture', this.$refs.picture.files[0]);
       }
 
-      formData.append('data', JSON.stringify(this.create));
-      axios.post('api/users', formData).then(function (response) {
+      for (var key in this.create) {
+        formData.append(key, this.create[key]);
+      }
+
+      axios.post('api/users', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      }).then(function (response) {
         _this2.users.push(response.data);
 
         _this2.create = {};
@@ -2316,6 +2324,7 @@ __webpack_require__.r(__webpack_exports__);
         this.edit.index = index;
       } else {
         Object.assign(this.edit, this._beforeEditingCache);
+        this.clear();
       }
     },
     update: function update() {
@@ -2327,8 +2336,15 @@ __webpack_require__.r(__webpack_exports__);
         formData.append('picture', this.$refs.pictureEdit.files[0]);
       }
 
-      formData.append('data', JSON.stringify(this.edit));
-      axios.post('api/users/' + this.edit.id, formData).then(function (response) {
+      for (var key in this.edit) {
+        if (key != 'picture') formData.append(key, this.edit[key]);
+      }
+
+      axios.post('api/users/' + this.edit.id, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      }).then(function (response) {
         _this3.users[_this3.edit.index] = response.data;
         _this3.errors = [];
 
@@ -2388,6 +2404,9 @@ __webpack_require__.r(__webpack_exports__);
     },
     clear: function clear() {
       this.alert.show = false;
+      this.create = {};
+      this.edit = {};
+      this.errors = [];
     },
     isEmptyListUsers: function isEmptyListUsers() {
       var empty = true;
@@ -2400,6 +2419,50 @@ __webpack_require__.r(__webpack_exports__);
       }
 
       return empty;
+    },
+    isCharRutValid: function isCharRutValid(event) {
+      var code = event.keyCode;
+
+      if (!(code >= 48 && code <= 57 || code == 8 || code == 46 || code == 75 || code == 107 || code == 173)) {
+        event.preventDefault();
+      }
+    },
+    validateRut: function validateRut(selector) {
+      var _this5 = this;
+
+      clearTimeout(this.timer);
+      var rut = $(selector).val();
+      var url = '';
+
+      if (!rut) {
+        return;
+      }
+
+      if (selector == '#createRut') {
+        url = 'api/users/rut/store/validate';
+      } else {
+        url = 'api/users/rut/update/validate/' + this.edit.id;
+      }
+
+      this.timer = setTimeout(function () {
+        axios.post(url, {
+          'rut': rut
+        }).then(function (response) {
+          delete _this5.errors['rut'];
+          $(selector).removeClass('is-invalid');
+          $(selector).addClass('is-valid');
+        })["catch"](function (error) {
+          var errorCode = error.response.status;
+
+          switch (errorCode) {
+            case 422:
+              _this5.errors = error.response.data.errors;
+
+            default:
+              break;
+          }
+        });
+      }, 800);
     }
   },
   filters: {
@@ -59629,9 +59692,18 @@ var render = function() {
                     ],
                     staticClass: "form-control",
                     class: { "is-invalid": _vm.errors.rut },
-                    attrs: { type: "text" },
+                    attrs: {
+                      type: "text",
+                      id: "createRut",
+                      maxlength: "10",
+                      placeholder: "00000000-0"
+                    },
                     domProps: { value: _vm.create.rut },
                     on: {
+                      keydown: _vm.isCharRutValid,
+                      keyup: function($event) {
+                        return _vm.validateRut("#createRut")
+                      },
                       input: function($event) {
                         if ($event.target.composing) {
                           return
@@ -59836,18 +59908,18 @@ var render = function() {
                   _c("input", {
                     ref: "picture",
                     staticClass: "form-control",
-                    class: { "is-invalid": _vm.errors.file },
+                    class: { "is-invalid": _vm.errors.picture },
                     attrs: { type: "file", id: "picture" }
                   }),
                   _vm._v(" "),
-                  _vm.errors.file
+                  _vm.errors.picture
                     ? _c(
                         "span",
                         {
                           staticClass: "invalid-feedback",
                           attrs: { role: "alert" }
                         },
-                        [_c("strong", [_vm._v(_vm._s(_vm.errors.file[0]))])]
+                        [_c("strong", [_vm._v(_vm._s(_vm.errors.picture[0]))])]
                       )
                     : _vm._e()
                 ])
@@ -60111,9 +60183,18 @@ var render = function() {
                     ],
                     staticClass: "form-control",
                     class: { "is-invalid": _vm.errors.rut },
-                    attrs: { type: "text" },
+                    attrs: {
+                      type: "text",
+                      id: "editRut",
+                      maxlength: "10",
+                      placeholder: "00000000-0"
+                    },
                     domProps: { value: _vm.edit.rut },
                     on: {
+                      keydown: _vm.isCharRutValid,
+                      keyup: function($event) {
+                        return _vm.validateRut("#editRut")
+                      },
                       input: function($event) {
                         if ($event.target.composing) {
                           return
